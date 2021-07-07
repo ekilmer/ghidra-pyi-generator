@@ -27,18 +27,18 @@ jobs:
         with:
           python-version: "2.7"
 
-      - uses: er28-0652/setup-ghidra@master
-        # NOTE: explicit version 10.0 is broken
-        with:
-          version: "latest"
+      - name: Setup Ghidra
+        run: |
+          wget https://github.com/NationalSecurityAgency/ghidra/releases/download/Ghidra_10.0_build/ghidra_10.0_PUBLIC_20210621.zip --output-document=ghidra.zip
+          unzip ghidra.zip
 
       - name: Prepare Jython Environment
         run:
-          pip2.7 install --target="$GHIDRA_INSTALL_DIR/Ghidra/Features/Python/data/jython-2.7.2/Lib/site-packages" attrs typing
+          pip2.7 install --target="$(pwd)/ghidra_10.0_PUBLIC/Ghidra/Features/Python/data/jython-2.7.2/Lib/site-packages" attrs typing
 
       - name: Build Package
         run: |
-          "$GHIDRA_INSTALL_DIR/support/analyzeHeadless" /tmp tmp -scriptPath $(pwd) -preScript generate_ghidra_pyi.py ./ ${GITHUB_REF#refs/*/v}
+          "$(pwd)/ghidra_10.0_PUBLIC/support/analyzeHeadless" /tmp tmp -scriptPath $(pwd) -preScript generate_ghidra_pyi.py ./ ${GITHUB_REF#refs/*/v}
           test -f setup.py # check manually, because analyzeHeadless doesn't fail on script failure
           test -d ghidra-stubs
 
