@@ -54,12 +54,6 @@ jobs:
           python setup.py sdist
 
 
-      - name: Publish distribution 📦 to PyPI
-        uses: pypa/gh-action-pypi-publish@master
-        with:
-          password: ${{ secrets.PYPI_API_TOKEN }}
-
-
       - name: Release on GitHub
         uses: softprops/action-gh-release@v1
         with:
