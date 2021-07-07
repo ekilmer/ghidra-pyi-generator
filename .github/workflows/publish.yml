@@ -1,9 +1,14 @@
 name: Publish Tagged Commit to PyPI
 
 on:
+  pull_request:
+    branches:
+      - '*'
   push:
     tags:
       - 'v*.*.*'
+    branches:
+      - 'master'
 
 
 jobs:
@@ -23,8 +28,9 @@ jobs:
           python-version: "2.7"
 
       - uses: er28-0652/setup-ghidra@master
-        with:
-          version: "9.2.2"
+        # NOTE: explicit version 10.0 is broken
+        # with:
+        #   version: "10.0"
 
       - name: Prepare Jython Environment
         run:
@@ -56,6 +62,7 @@ jobs:
 
       - name: Release on GitHub
         uses: softprops/action-gh-release@v1
+        if: ${{ startsWith('refs/tags/v', github.ref) }}
         with:
           files: ./dist/*
         env:
