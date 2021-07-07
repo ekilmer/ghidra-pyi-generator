@@ -1,4 +1,4 @@
-name: Publish Tagged Commit to PyPI
+name: Publish Tagged Commit to PyPI 
 
 on:
   pull_request:
