@@ -59,6 +59,11 @@ jobs:
           python setup.py bdist_wheel --universal
           python setup.py sdist
 
+      - uses: actions/upload-artifact@v2
+        with:
+          name: stubs
+          path: ./dist/*
+
 
       - name: Release on GitHub
         uses: softprops/action-gh-release@v1
